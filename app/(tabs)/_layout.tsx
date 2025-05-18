@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Trophy, User, Toilet } from 'lucide-react-native';
 import { HapticTab } from '@/components/HapticTab';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from 'expo-router';
+import { Toilet, User } from 'lucide-react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -23,16 +23,9 @@ export default function TabLayout() {
                 },
             }}
         >
-            <Tabs.Screen
-                name="index"
-                options={{
-                    title: '',
-                    tabBarIcon: ({ color }) => <Trophy color={color} size={30} style={styles.trophy} />,
-                }}
-            />
 
             <Tabs.Screen
-                name="toilet"
+                name="index"
                 options={{
                     title: '',
                     tabBarIcon: ({ color }) => <Toilet color={color} size={28} />,
