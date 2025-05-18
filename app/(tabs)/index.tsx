@@ -93,7 +93,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit} >
-            PUXAR A DESCARGA
+            <Text style={styles.buttonText}>PUXAR A DESCARGA</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -203,5 +203,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
   },
 });
