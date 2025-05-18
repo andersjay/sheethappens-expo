@@ -1,6 +1,6 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack , useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect, useState } from 'react';
@@ -14,10 +14,16 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+  const router = useRouter();
 
   useEffect(() => {
     AsyncStorage.getItem('token').then(token => {
-      setIsAuthenticated(!!token);
+      if (token) {
+        setIsAuthenticated(true);
+        router.replace('/(tabs)/homepage');
+      } else {
+        setIsAuthenticated(false);
+      }
     });
   }, []);
 

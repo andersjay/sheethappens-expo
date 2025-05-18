@@ -9,35 +9,11 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import api from '../app/api';
 
 
-export default function Select() {
-    const [options, setOptions] = useState([]);
-    const [selectedValue, setSelectedValue] = useState(null);
+export default function Select({ isLoading, options, setOptions, selectedValue, setSelectedValue }: { isLoading: boolean, options: any, setOptions: any, selectedValue: any, setSelectedValue: any }) {
     const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchOptions = async () => {
-            try {
-                // Exemplo: const response = await fetch('https://api.exemplo.com/options');
-                // const data = await response.json();
-                const data = [
-                    { label: 'Masculino', value: 'M' },
-                    { label: 'Feminino', value: 'F' },
-                    { label: 'Outro', value: 'O' },
-                ];
-                setOptions(data as any);
-            } catch (e) {
-                console.error(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOptions();
-    }, []);
-
     const selectedOption = options.find((o: any) => o.value === selectedValue);
 
     const handleSelect = (value: any) => {
@@ -45,7 +21,7 @@ export default function Select() {
         setVisible(false);
     };
 
-    if (loading) {
+    if (isLoading) {
         return <ActivityIndicator style={styles.loader} size="large" />;
     }
 

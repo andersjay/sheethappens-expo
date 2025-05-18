@@ -25,8 +25,14 @@ export default function LoginScreen() {
         email: data.email,
         password: data.password,
       });
-      const token = response.data.token;
-      await AsyncStorage.setItem('token', token);
+      const responseData = await response.data;
+    
+      alert(responseData.access_token);
+      if (!responseData.access_token) {
+        alert('Erro ao fazer login: token não recebido da API.');
+        return;
+      }
+      await AsyncStorage.setItem('token', responseData.access_token);
       alert('Login realizado com sucesso!');
       router.replace('/(tabs)/homepage');
     } catch (error: any) {

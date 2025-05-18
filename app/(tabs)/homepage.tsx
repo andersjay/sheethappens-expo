@@ -1,10 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Poem from '../../components/Poem';
 import Select from '../../components/Select';
+import api from '../api';
 
 export default function HomeScreen() {
+  const [options, setOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
   const [poops, setPoops] = useState(0);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const fetchOptions = async () => {
+        try {
+            const response = await api.get('/api/places');
+            const data = response.data.map((item: any) => ({ label: item.name, value: item.id }));
+            setOptions(data);
+        } catch (e) {
+            console.error(e);
+        } finally {
+          setIsLoading(false);
+        }
+    };
+
+    fetchOptions();
+}, []);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post('/api/increment-poop', {
+        place_id: selectedOption,
+      });
+      console.log(response.data);
+      setPoops(response.data.poops);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <View style={styles.stepContainer}>
@@ -26,11 +59,11 @@ export default function HomeScreen() {
 
       <View style={styles.checkPoopContainer}>
         <Text style={styles.checkPoopText}>Local</Text>
-        <Select />
+        <Select isLoading={isLoading} options={options} setOptions={setOptions} selectedValue={selectedOption} setSelectedValue={setSelectedOption}/>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setPoops(p => p + 1)} >
+            onPress={handleSubmit} >
             PUXAR A DESCARGA
           </TouchableOpacity>
         </View>
