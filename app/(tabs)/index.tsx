@@ -107,7 +107,8 @@ export default function HomeScreen() {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <View style={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, alignItems: 'center', maxWidth: '80%' }}>
             <Text style={{ fontSize: 18, marginBottom: 16, textAlign: 'center' }}>{sentence}</Text>
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: '#443627', padding: 12, borderRadius: 8 }}>
+            <Poem />
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: '#443627', padding: 12, borderRadius: 8, marginTop: 16 }}>
               <Text style={{ color: '#fff', fontWeight: 'bold' }}>Fechar</Text>
             </TouchableOpacity>
           </View>

@@ -1,7 +1,7 @@
 import { HapticTab } from '@/components/HapticTab';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Tabs } from 'expo-router';
-import { Toilet } from 'lucide-react-native';
+import { Home, Toilet } from 'lucide-react-native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -28,7 +28,16 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     title: '',
+                    tabBarLabel: () => '',
                     tabBarIcon: ({ color }) => <Toilet color={color} size={28} />,
+                }}
+            />
+             <Tabs.Screen
+                name="homepage"
+                options={{
+                    title: '',
+                    tabBarLabel: () => '',
+                    tabBarIcon: ({ color }) => <Home color={color} size={28} />,
                 }}
             />
 
