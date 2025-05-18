@@ -1,35 +1,31 @@
-import api from '@/app/api';
-import { useEffect } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 type PoopAlertTimesProps = {
-	poopPlace: string;
-	poopPlaceId: number;
+    poopPlace: string;
+    poopQuantity: number;
 };
 
-export default function PoopAlertTimes({ poopPlace, poopPlaceId }: PoopAlertTimesProps) {
+export default function PoopAlertTimes({ poopPlace, poopQuantity }: PoopAlertTimesProps) {
 
-    useEffect(() => {
-        const fetchOptions = async () => {
-            try {
-                const response = await api.get(`/api/get-poop-local/${poopPlaceId}`);
-                console.log(response.data);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        fetchOptions();
-    }, []);
-
-	return (
-        <>
-            <Text>{poopPlace}</Text>
-            <Text>{poopPlaceId}</Text>
-        </>
-    )
+    return (
+    <View style={styles.stepContainer}>
+      <Text style={styles.message}>
+        Você cagou {poopQuantity} {poopQuantity === 1 ? 'vez' : 'vezes'} em {poopPlace}.
+      </Text>
+    </View>
+  );
 }
 
-const style = StyleSheet.create({
-
+const styles = StyleSheet.create({
+  stepContainer: {
+    backgroundColor: '#443627',
+    borderRadius: 10,
+    padding: 12,
+  },
+  message: {
+    fontSize: 16,
+    color: '#fff',
+    width: '100%',
+    textAlign: 'justify',
+  },
 });

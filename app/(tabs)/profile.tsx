@@ -6,7 +6,7 @@ import api from '../api';
 
 interface PoopPlace {
   name: string;
-  id: number;
+  poop_counts_count: number;
 }
 
 export default function Profile() {
@@ -16,8 +16,9 @@ export default function Profile() {
   useEffect(() => {
     const fetchOptions = async () => {
         try {
-            const response = await api.get('/api/places');
-            const data = response.data.map((item: PoopPlace) => ({name: item.name, id: item.id }));
+            const response = await api.get('/api/locals-with-poop-count');
+            console.log(response.data);
+            const data = response.data.map((item: PoopPlace) => ({name: item.name, poop_counts_count: item.poop_counts_count }));
             setPoops(data);
         } catch (e) {
             console.error(e);
@@ -36,14 +37,15 @@ export default function Profile() {
         <Image
           source={{ uri: "https://api.dicebear.com/9.x/adventurer/svg?seed=Jack" }}
           style={styles.image}
-          resizeMode="contain" />
+          resizeMode="cover"
+        />
       </View>
       <View style={styles.shitCounterTimesContainer}>
         {poopPlaces.map((poop, index) => (
           <View style={styles.poopCountContainer} key={index}>
             <PoopAlertTimes
               poopPlace={poop.name}
-              poopPlaceId={poop.id}/>
+              poopQuantity={poop.poop_counts_count}/>
           </View>
         ))}
       </View>
@@ -55,37 +57,38 @@ export default function Profile() {
 const styles = StyleSheet.create({
   stepContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: '#FCEFCB',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   headerImage: {
     height: 150,
-    width: '100%',
-    backgroundColor: '#FCEFCB',
+    width: '40%',
     alignItems: 'center',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+    flexGrow: 0,
+    flexShrink: 0,
+    alignSelf: 'center',
   },
   image: {
-    width: 200,
-    height: 150
+    width: '100%',
+    height: '100%',
   },
   shitCounterTimesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#FCEFCB',
     flex: 1,
+    padding: 16,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignContent: 'flex-start',
+    gap: 8,
   },
   poopCountContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexBasis: '30%',
     padding: 16,
-    backgroundColor: '#FCEFCB',
-    flex: 1,
-  }
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 4,
+  },
 });
