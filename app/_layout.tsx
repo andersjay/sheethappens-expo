@@ -17,12 +17,17 @@ export default function RootLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    AsyncStorage.getItem('token').then(token => {
-      if (token) {
+    AsyncStorage.multiGet(['token', 'token_expires_at']).then(([tokenArr, expiresArr]) => {
+      const token = tokenArr[1];
+      const expiresAt = expiresArr[1];
+      if (token && expiresAt && Date.now() < Number(expiresAt)) {
         setIsAuthenticated(true);
         router.replace('/(tabs)/homepage');
       } else {
+        AsyncStorage.removeItem('token');
+        AsyncStorage.removeItem('token_expires_at');
         setIsAuthenticated(false);
+        router.replace('/');
       }
     });
   }, []);
@@ -38,7 +43,10 @@ export default function RootLayout() {
         {isAuthenticated ? (
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         ) : (
-          <Stack.Screen name="index" options={{ headerShown: false, title: '' }} />
+          <>
+            <Stack.Screen name="index" options={{ headerShown: false, title: '' }} />
+            <Stack.Screen name="register" options={{ headerShown: false, title: '' }} />
+          </>
         )}
       </Stack>
       <StatusBar style="auto" />

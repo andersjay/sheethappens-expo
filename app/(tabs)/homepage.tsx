@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
 import Poem from '../../components/Poem';
 import Select from '../../components/Select';
 import api from '../api';
@@ -10,6 +10,8 @@ export default function HomeScreen() {
   const [poops, setPoops] = useState(0);
   const [selectedValue, setSelectedValue] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [sentence, setSentence] = useState('');
   
   useEffect(() => {
     const fetchOptions = async () => {
@@ -32,8 +34,15 @@ export default function HomeScreen() {
       const response = await api.post('/api/increment-poop', {
         place_id: selectedOption,
       });
-      console.log(response.data);
       setPoops(response.data.poops);
+      if (response.status === 200) {
+        // Buscar frase aleatória
+        const sentenceRes = await api.get('/api/random-sentence');
+        if (sentenceRes.data && sentenceRes.data.sentence) {
+          setSentence(sentenceRes.data.sentence);
+          setModalVisible(true);
+        }
+      }
     } catch (e) {
       console.error(e);
     }
@@ -68,6 +77,22 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View style={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, alignItems: 'center', maxWidth: '80%' }}>
+            <Text style={{ fontSize: 18, marginBottom: 16, textAlign: 'center' }}>{sentence}</Text>
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: '#443627', padding: 12, borderRadius: 8 }}>
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
