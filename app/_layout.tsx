@@ -32,7 +32,7 @@ export default function RootLayout() {
         {isAuthenticated ? (
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         ) : (
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false, title: '' }} />
         )}
       </Stack>
       <StatusBar style="auto" />
