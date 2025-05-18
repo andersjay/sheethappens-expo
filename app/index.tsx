@@ -28,7 +28,7 @@ export default function LoginScreen() {
       const token = response.data.token;
       await AsyncStorage.setItem('token', token);
       alert('Login realizado com sucesso!');
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/homepage');
     } catch (error: any) {
       alert('Erro ao fazer login: ' + (error.response?.data?.message || error.message));
     }
