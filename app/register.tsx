@@ -1,53 +1,49 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useFonts, Shrikhand_400Regular } from '@expo-google-fonts/shrikhand';
-import AppLoading from 'expo-app-loading';
-import api from './api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import api from './api';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 
-  let [fontsLoaded] = useFonts({
-    Shrikhand_400Regular,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   const onSubmit = async (data: any) => {
     try {
-      const response = await api.post('/api/login', {
+      await api.post('/api/register', {
+        name: data.name,
         email: data.email,
         password: data.password,
       });
-      const responseData = await response.data;
-    
-      alert(responseData.access_token);
-      if (!responseData.access_token) {
-        alert('Erro ao fazer login: token não recebido da API.');
-        return;
-      }
-      await AsyncStorage.setItem('token', responseData.access_token);
-      const expiresAt = (Date.now() + 10 * 60 * 1000).toString();
-      await AsyncStorage.setItem('token_expires_at', expiresAt);
-      alert('Login realizado com sucesso!');
-      router.replace('/(tabs)/homepage');
+      alert('Registro realizado com sucesso!');
+      router.replace('/');
     } catch (error: any) {
-      alert('Erro ao fazer login: ' + (error.response?.data?.message || error.message));
+      alert('Erro ao registrar: ' + (error.response?.data?.message || error.message));
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <View style={[styles.titleContainer, { alignItems: 'center' }]}> 
-          <Text style={[styles.title, { fontFamily: 'Shrikhand_400Regular' }]}>Sh*t</Text>
-          <Text style={[styles.title, { fontFamily: 'Shrikhand_400Regular', lineHeight: 64 }]}>Happens</Text>
+        <Text style={styles.title}>Registrar</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Nome</Text>
+          <Controller
+            control={control}
+            rules={{ required: 'O nome é obrigatório' }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                autoCapitalize="words"
+              />
+            )}
+            name="name"
+            defaultValue=""
+          />
+          {typeof errors.name?.message === 'string' && <Text style={styles.error}>{errors.name.message}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Email</Text>
@@ -67,7 +63,7 @@ export default function LoginScreen() {
             name="email"
             defaultValue=""
           />
-          {typeof errors.email?.message === 'string' && <Text style={{ color: 'red' }}>{errors.email.message}</Text>}
+          {typeof errors.email?.message === 'string' && <Text style={styles.error}>{errors.email.message}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Senha</Text>
@@ -86,17 +82,14 @@ export default function LoginScreen() {
             name="password"
             defaultValue=""
           />
-          {typeof errors.password?.message === 'string' && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
+          {typeof errors.password?.message === 'string' && <Text style={styles.error}>{errors.password.message}</Text>}
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/register')}>
-          <Text style={styles.linkButtonText}>Não tem conta? Registrar</Text>
+          <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -109,31 +102,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   title: {
-    fontSize: 60,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#E9A319',
-  },
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'column',
-    gap: 0,
-    alignItems: 'center',
+    marginBottom: 32,
   },
   inputContainer: {
     flexDirection: 'column',
     width: '100%',
     gap: 10,
     marginBottom: 20,
-
   },
   inputLabel: {
     fontSize: 18,
-
     color: '#E9A319',
   },
   input: {
@@ -154,22 +135,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
   },
-
-  buttonDisabled: {
-    backgroundColor: '#644F39',
-  },
-  buttonText: { 
+  buttonText: {
     color: '#443627',
-    fontSize: 20 ,
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  linkButton: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  linkButtonText: {
-    color: '#E9A319',
-    fontSize: 16,
-    textDecorationLine: 'underline',
+  error: {
+    color: 'red',
+    marginTop: 4,
   },
 }); 
