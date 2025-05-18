@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Modal, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import Poem from '../../components/Poem';
 import Select from '../../components/Select';
 import api from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+import { AuthContext } from '../AuthContext';
 
 export default function HomeScreen() {
   const [options, setOptions] = useState([]);
@@ -12,6 +15,8 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [sentence, setSentence] = useState('');
+  const router = useRouter();
+  const { setIsAuthenticated } = useContext(AuthContext);
   
   useEffect(() => {
     const fetchOptions = async () => {
@@ -48,8 +53,20 @@ export default function HomeScreen() {
     }
   }
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('token_expires_at');
+    setIsAuthenticated(false);
+    router.replace('/');
+  };
+
   return (
     <View style={styles.stepContainer}>
+      <View style={{ width: '100%', alignItems: 'flex-end', marginTop: 16, marginRight: 16 }}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Sair</Text>
+        </TouchableOpacity>
+      </View>
       <>
         <View style={styles.poopCountContainer}>
           <View style={styles.firstPoopCount}>
@@ -173,5 +190,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
     color: '#fff'
-  }
+  },
+  logoutButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: '#443627',
+  },
+  logoutButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
 });

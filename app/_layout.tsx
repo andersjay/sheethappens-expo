@@ -3,10 +3,11 @@ import { useFonts } from 'expo-font';
 import { Stack , useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AuthContext } from './AuthContext';
 
 export default function RootLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,18 +39,20 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {isAuthenticated ? (
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        ) : (
-          <>
-            <Stack.Screen name="index" options={{ headerShown: false, title: '' }} />
-            <Stack.Screen name="register" options={{ headerShown: false, title: '' }} />
-          </>
-        )}
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          {isAuthenticated ? (
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          ) : (
+            <>
+              <Stack.Screen name="index" options={{ headerShown: false, title: '' }} />
+              <Stack.Screen name="register" options={{ headerShown: false, title: '' }} />
+            </>
+          )}
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </AuthContext.Provider>
   );
 }

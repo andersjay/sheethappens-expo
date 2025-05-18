@@ -36,7 +36,7 @@ export default function LoginScreen() {
       const expiresAt = (Date.now() + 10 * 60 * 1000).toString();
       await AsyncStorage.setItem('token_expires_at', expiresAt);
       alert('Login realizado com sucesso!');
-      router.replace('/(tabs)/homepage');
+      router.replace('/(tabs)');
     } catch (error: any) {
       alert('Erro ao fazer login: ' + (error.response?.data?.message || error.message));
     }

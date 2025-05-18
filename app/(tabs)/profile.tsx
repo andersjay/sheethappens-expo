@@ -1,8 +1,10 @@
 import PoopAlertTimes from '@/components/PoopAlertTimes';
 import AppLoading from 'expo-app-loading';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import api from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
 interface PoopPlace {
   name: string;
@@ -12,6 +14,7 @@ interface PoopPlace {
 export default function Profile() {
   const [poopPlaces, setPoops] = useState([] as PoopPlace[]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -29,6 +32,12 @@ export default function Profile() {
 
     fetchOptions();
   }, []);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('token_expires_at');
+    router.replace('/');
+  };
 
   return (
     <View style={styles.stepContainer}>
@@ -49,8 +58,10 @@ export default function Profile() {
           </View>
         ))}
       </View>
+      <TouchableOpacity style={{backgroundColor: '#E9A319', padding: 16, borderRadius: 8, alignItems: 'center', margin: 16}} onPress={handleLogout}>
+        <Text style={{color: '#443627', fontWeight: 'bold', fontSize: 18}}>Sair</Text>
+      </TouchableOpacity>
     </View>
-
   );
 }
 
