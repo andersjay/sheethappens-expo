@@ -26,8 +26,7 @@ export default function LoginScreen() {
         password: data.password,
       });
       const responseData = await response.data;
-    
-      alert(responseData.access_token);
+  
       if (!responseData.access_token) {
         alert('Erro ao fazer login: token não recebido da API.');
         return;
@@ -35,7 +34,6 @@ export default function LoginScreen() {
       await AsyncStorage.setItem('token', responseData.access_token);
       const expiresAt = (Date.now() + 10 * 60 * 1000).toString();
       await AsyncStorage.setItem('token_expires_at', expiresAt);
-      alert('Login realizado com sucesso!');
       router.replace('/(tabs)');
     } catch (error: any) {
       alert('Erro ao fazer login: ' + (error.response?.data?.message || error.message));
