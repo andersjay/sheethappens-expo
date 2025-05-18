@@ -1,50 +1,76 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# 🧻 SheetHappens
 
-## Get started
+Um app irreverente e reflexivo criado em 24h para te ajudar a acompanhar sua vida intestinal com humor, dados e poemas gerados automaticamente com base na frequência das suas idas ao banheiro.
 
-1. Install dependencies
+> 💡 Feito com 💩, criatividade e um pouco de PHP.
 
-   ```bash
-   npm install
-   ```
+--- 
 
-2. Start the app
+## Como Rodar (sem explodir seu computador)
 
-   ```bash
-   npx expo start
-   ```
+### Frontend
 
-In the output, you'll find options to open the app in a
+ ```bash
+ 
+1. git clone https://github.com/andersjay/sheethappens-expo#
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+2. cd sheethappens-expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+3. npm install
 
-## Get a fresh project
+4. npx expo start
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+5. utilize o Expo Go (mobile) ou o localhost para visualizar o projeto
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Backend
 
-## Learn more
+```bash
 
-To learn more about developing your project with Expo, look at the following resources:
+1. git clone https://github.com/andersjay/sheethappens-backend
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+2. composer install
 
-## Join the community
+3. php artisan migrate 
 
-Join our community of developers creating universal apps.
+4. php artisan db:seed
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+
+--- 
+
+## Funcionalidades Principais
+
+| Funcionalidade       | Descrição                                            |
+| -------------------- | ---------------------------------------------------- |
+| Registro de Usuários | Usuários podem se registrar com nome, e-mail e senha |
+| Login                | Usuários registrados podem logar em sua conta        |
+| Poop Count           | Contagem de suas idas ao banheiro                    |
+| Seletor de Locais    | Permite que selecione onde você foi se aliviar       |
+
+
+---
+## Tecnologias
+
+- React Native (Expo)
+- PHP
+- MySQL
+- Axios
+
+---
+## Equipe
+
+- Alan 
+- Anderson 
+- Bruno 
+- Gabriel 
+- Gabriel
+> _Hackathon [Codecon] – [2025]_
+
+---
+
+## 📄 Licença
+
+MIT © 2025 – Projeto desenvolvido para fins educacionais e de entretenimento.
+
