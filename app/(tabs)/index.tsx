@@ -39,8 +39,8 @@ export default function HomeScreen() {
       const response = await api.post('/api/increment-poop', {
         place_id: selectedOption,
       });
-      setPoops(response.data.poops);
       if (response.status === 200) {
+        setPoops((prev) => prev + 1);
         // Buscar frase aleatória
         const sentenceRes = await api.get('/api/random-sentence');
         if (sentenceRes.data && sentenceRes.data.sentence) {
