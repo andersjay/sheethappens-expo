@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Poem from '../../components/Poem';
 import Select from '../../components/Select';
 import api from '../api';
@@ -58,7 +58,10 @@ export default function HomeScreen() {
               <Text style={styles.poopCountLabel}>Colaborando com a natureza</Text>
             </View>
             <View style={styles.poopImage}>
-              <Text style={styles.poopImageText}>💩</Text>
+              <Image
+                source={require('@/assets/images/cocozao.png')}
+                style={styles.poopImageText}
+                resizeMode="stretch" />
             </View>
           </View>
 
@@ -137,7 +140,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   poopImageText: {
-    fontSize: 32,
+    width: 100, 
+    height: 100, 
+    borderRadius: 10
   },
   checkPoopContainer: {
     flexDirection: 'column',
