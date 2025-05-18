@@ -41,11 +41,11 @@ export default function HomeScreen() {
       });
       if (response.status === 200) {
         setPoops((prev) => prev + 1);
-        // Buscar frase aleatória
+        // Buscar frase aleatória e mostrar como alert
         const sentenceRes = await api.get('/api/random-sentence');
+        console.log(sentenceRes.data);
         if (sentenceRes.data && sentenceRes.data.sentence) {
-          setSentence(sentenceRes.data.sentence);
-          setModalVisible(true);
+          alert(sentenceRes.data.sentence);
         }
       }
     } catch (e) {
